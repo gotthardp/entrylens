@@ -1,0 +1,6 @@
+.claude/
+.pcba-workflow/
+datasheets/
+*.csv
+*.net
+*.zip
