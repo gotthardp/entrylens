@@ -1,0 +1,788 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Entrylens",
+    "description": "Entrylens application server API",
+    "license": {
+      "name": "MPL-2.0",
+      "identifier": "MPL-2.0"
+    },
+    "version": "0.1.0"
+  },
+  "paths": {
+    "/api/v1/doorways": {
+      "get": {
+        "tags": [
+          "doorways"
+        ],
+        "operationId": "list_doorways",
+        "responses": {
+          "200": {
+            "description": "Doorways sorted by inside room, then outside room",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DoorwayWithStatus"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "doorways"
+        ],
+        "operationId": "create_doorway",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DoorwayInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Doorway created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DoorwayWithStatus"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid rooms or DevEUI",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "DevEUI of another doorway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/doorways/{id}": {
+      "put": {
+        "tags": [
+          "doorways"
+        ],
+        "operationId": "update_doorway",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Doorway id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DoorwayInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Doorway updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DoorwayWithStatus"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid rooms or DevEUI",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown doorway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Rooms of a doorway with passages, or DevEUI of another doorway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "doorways"
+        ],
+        "operationId": "delete_doorway",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Doorway id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Doorway deleted"
+          },
+          "404": {
+            "description": "Unknown doorway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Doorway has passages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/occupancy": {
+      "get": {
+        "tags": [
+          "occupancy"
+        ],
+        "operationId": "get_occupancy",
+        "responses": {
+          "200": {
+            "description": "Occupancy since local midnight",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Occupancy"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/rooms": {
+      "get": {
+        "tags": [
+          "rooms"
+        ],
+        "operationId": "list_rooms",
+        "responses": {
+          "200": {
+            "description": "Rooms sorted by name",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Room"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "rooms"
+        ],
+        "operationId": "create_room",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoomInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Room created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Room"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid name or threshold",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicate name",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/rooms/{id}": {
+      "put": {
+        "tags": [
+          "rooms"
+        ],
+        "operationId": "update_room",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Room id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RoomInput"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Room updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Room"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid name or threshold",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Unknown room",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Duplicate name",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "rooms"
+        ],
+        "operationId": "delete_room",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Room id",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Room deleted"
+          },
+          "404": {
+            "description": "Unknown room",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Room used by a doorway",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/timeline": {
+      "get": {
+        "tags": [
+          "timeline"
+        ],
+        "operationId": "get_timeline",
+        "parameters": [
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start, Unix time in seconds.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "end",
+            "in": "query",
+            "description": "End, Unix time in seconds; at most 3660 days after the start.",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Occupancy of each room and the total, and entries into each room, since local midnight; every point for up to 25 hours, otherwise the maximum per bucket, and for more than 31 days per day",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Timeline"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid interval",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorBody"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Doorway": {
+        "type": "object",
+        "required": [
+          "id",
+          "inside_room",
+          "has_passages",
+          "fault"
+        ],
+        "properties": {
+          "dev_eui": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "DevEUI of the sensor, 16 hexadecimal digits in upper case; `null` for none."
+          },
+          "fault": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Fault code the sensor last reported; 0 = no fault."
+          },
+          "has_passages": {
+            "type": "boolean",
+            "description": "Whether passages were counted through the doorway; it then cannot be deleted, nor can its\nrooms be changed."
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "inside_room": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "last_passage": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "End of the last passage interval with a passage (Unix time); `null` if there is none."
+          },
+          "last_report": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "When the sensor last reported (Unix time); `null` before its first report."
+          },
+          "outside_room": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "`null` for a doorway to the outside corridor."
+          },
+          "voltage_mv": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "Input voltage the sensor last reported, in millivolts; `null` before its first report."
+          }
+        }
+      },
+      "DoorwayInput": {
+        "type": "object",
+        "required": [
+          "inside_room"
+        ],
+        "properties": {
+          "dev_eui": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "DevEUI of the sensor: 16 hexadecimal digits, optionally separated by spaces, `-` or `:`;\n`null`, missing or empty for none."
+          },
+          "inside_room": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "outside_room": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "`null` for a doorway to the outside corridor."
+          }
+        }
+      },
+      "DoorwayWithStatus": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Doorway"
+          },
+          {
+            "type": "object",
+            "required": [
+              "no_passage",
+              "no_report",
+              "low_voltage"
+            ],
+            "properties": {
+              "low_voltage": {
+                "type": "boolean",
+                "description": "The last reported input voltage is below the lowest acceptable one."
+              },
+              "no_passage": {
+                "type": "boolean",
+                "description": "No passage within the configured period, or none yet."
+              },
+              "no_report": {
+                "type": "boolean",
+                "description": "No sensor report within the configured period, or none yet."
+              }
+            }
+          }
+        ],
+        "description": "A doorway with the status of its sensor at the time of the request."
+      },
+      "ErrorBody": {
+        "type": "object",
+        "description": "Error response body.",
+        "required": [
+          "error"
+        ],
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
+      },
+      "Occupancy": {
+        "type": "object",
+        "required": [
+          "total",
+          "rooms",
+          "sensor_faults",
+          "crowded_rooms"
+        ],
+        "properties": {
+          "crowded_rooms": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of rooms whose occupancy exceeds their threshold."
+          },
+          "rooms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoomOccupancy"
+            },
+            "description": "Rooms sorted by name."
+          },
+          "sensor_faults": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of doorways whose sensor last reported a fault."
+          },
+          "total": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Sum of the room occupancies."
+          }
+        }
+      },
+      "Room": {
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "threshold": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "Occupancy above which the room is crowded; `null` for none."
+          }
+        }
+      },
+      "RoomInput": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Room name; leading and trailing spaces are removed, 1-100 characters, unique\n(case-insensitive)."
+          },
+          "threshold": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "format": "int64",
+            "description": "Occupancy above which the room is crowded, at least 1; `null` or missing for none."
+          }
+        }
+      },
+      "RoomOccupancy": {
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "occupancy",
+          "entries",
+          "sensor_faults",
+          "crowded"
+        ],
+        "properties": {
+          "crowded": {
+            "type": "boolean",
+            "description": "Whether the occupancy exceeds the room's threshold."
+          },
+          "entries": {
+            "type": "integer",
+            "format": "int64",
+            "description": "People who entered the room since local midnight, with the doorways' rooms."
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "occupancy": {
+            "type": "integer",
+            "format": "int64",
+            "description": "People in the room, counted since local midnight. May be negative with counting errors."
+          },
+          "sensor_faults": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Number of doorways to or from the room whose sensor last reported a fault."
+          }
+        }
+      },
+      "RoomTimeline": {
+        "type": "object",
+        "description": "Points of a room, `[time, count]` pairs ordered by time.",
+        "required": [
+          "id",
+          "name",
+          "occupancy",
+          "entries"
+        ],
+        "properties": {
+          "entries": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            },
+            "description": "People who entered the room on each local day of the interval (from the `daily` table):\none point per day with entries, at the end of the day's last passage interval with entries,\nwith the day's total (for today, the total so far). Also for the day before and the day\nafter the interval, so that the line reaches its edges."
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "name": {
+            "type": "string"
+          },
+          "occupancy": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            },
+            "description": "People in the room since local midnight (from the `occupancy` table). With `bucket` 0: a\npoint after each passage interval, and a count of 0 at each local midnight up to now, where\nthe count restarts. Otherwise a point at the start of each bucket (with `bucket` [`DAY`],\neach local midnight) with the highest count within it."
+          }
+        }
+      },
+      "Timeline": {
+        "type": "object",
+        "required": [
+          "bucket",
+          "total",
+          "rooms"
+        ],
+        "properties": {
+          "bucket": {
+            "type": "integer",
+            "format": "int64",
+            "description": "Length of the buckets in seconds; 0 if the points are those of every passage interval;\n[`DAY`] for a point per local day (which may be 23 or 25 hours long)."
+          },
+          "rooms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RoomTimeline"
+            },
+            "description": "Rooms sorted by name."
+          },
+          "total": {
+            "type": "array",
+            "items": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "format": "int64"
+              }
+            },
+            "description": "Total occupancy (the sum of the rooms)."
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+#!/bin/sh
+# SPDX-License-Identifier: MPL-2.0
+set -e
+
+# The database in /var/lib/entrylens is kept, also on purge: passages are kept forever.
+if [ -d /run/systemd/system ]; then
+    systemctl daemon-reload
+fi

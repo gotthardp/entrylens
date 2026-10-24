@@ -1,0 +1,12 @@
+Package: entrylens
+Version: @VERSION@
+Architecture: @ARCH@
+Maintainer: Petr Gotthard <ing.petr.gotthard@gmail.com>
+Depends: @DEPENDS@
+Section: net
+Priority: optional
+Homepage: https://github.com/gotthardp/entrylens
+Description: Entrylens application server
+ Stores rooms, doorways and passages counted by Entrylens people-counting
+ sensors, and provides a web interface with the current occupancy of each
+ room and entry statistics.

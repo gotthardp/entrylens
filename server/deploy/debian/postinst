@@ -1,0 +1,15 @@
+#!/bin/sh
+# SPDX-License-Identifier: MPL-2.0
+set -e
+
+if [ "$1" = configure ]; then
+    systemd-sysusers entrylens.conf
+    # The configuration will hold MQTT/SMTP passwords.
+    chown root:entrylens /etc/entrylens.toml
+    chmod 640 /etc/entrylens.toml
+    if [ -d /run/systemd/system ]; then
+        systemctl daemon-reload
+        systemctl enable entrylens.service
+        systemctl restart entrylens.service
+    fi
+fi

@@ -1,0 +1,48 @@
+{
+  "name": "entrylens-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MPL-2.0",
+  "type": "module",
+  "engines": {
+    "node": "^22.22.1",
+    "npm": "^9.2.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "gen:api": "openapi-typescript ../backend/openapi.json -o src/api/schema.d.ts",
+    "build": "tsc --noEmit && vite build",
+    "lint": "tsc --noEmit && eslint . --max-warnings 0 && prettier --check .",
+    "format": "prettier --write .",
+    "test": "TZ=Europe/Prague vitest run"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^6.3.4",
+    "@tanstack/react-query": "^5.104.1",
+    "antd": "^6.6.5",
+    "chart.js": "^4.5.1",
+    "chartjs-adapter-dayjs-4": "^1.0.4",
+    "chartjs-plugin-zoom": "^2.2.0",
+    "dayjs": "^1.11.23",
+    "openapi-fetch": "^0.17.0",
+    "react": "^19.3.0",
+    "react-chartjs-2": "^5.3.1",
+    "react-dom": "^19.3.0",
+    "react-router": "^8.4.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "eslint": "^10.12.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "openapi-typescript": "^7.13.0",
+    "prettier": "^3.9.10",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.71.1",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5"
+  }
+}

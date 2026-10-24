@@ -1,0 +1,4 @@
+# Occupancy and statistics depend on the local time zone. Tests (and `cargo run`, unless TZ is
+# already set) use a zone with DST changes.
+[env]
+TZ = "Europe/Prague"

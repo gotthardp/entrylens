@@ -1,0 +1,62 @@
+/* SPDX-License-Identifier: MPL-2.0 */
+
+/* A number that shows or hides a chart line; --color and --line are the line's colour and width,
+   --text the colour of the number on --color. */
+.toggle {
+  display: inline-block;
+  min-width: 40px;
+  /* An underline as wide as the line; the padding keeps the size of the shown state. */
+  padding: 0 8px max(0px, 2px - var(--line));
+  border: 2px solid transparent;
+  border-bottom-width: var(--line);
+  border-bottom-color: var(--color);
+  border-radius: 0;
+  /* The text colour, not the line's: light line colours are unreadable on white. */
+  color: inherit;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color 0.15s,
+    box-shadow 0.15s,
+    border-radius 0.15s;
+}
+
+.toggle.large {
+  min-width: 64px;
+  padding-inline: 12px;
+}
+
+.toggle.dashed {
+  border-bottom-style: dashed;
+}
+
+/* Hidden line: an underline; hovering tints the background. */
+.toggle:hover {
+  border-radius: 6px 6px 0 0;
+  background-color: color-mix(in srgb, var(--color) 15%, transparent);
+}
+
+/* Shown line: filled with its colour; hovering adds a halo. */
+.toggle.shown {
+  padding-bottom: 0;
+  border-bottom-width: max(2px, var(--line));
+  border-color: var(--color);
+  border-radius: 6px;
+  background-color: var(--color);
+  color: var(--text);
+}
+
+.toggle.shown.dashed {
+  border-style: dashed;
+}
+
+.toggle.shown:hover {
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color) 35%, transparent);
+}
+
+.toggle:focus-visible {
+  outline: 2px solid var(--color);
+  outline-offset: 2px;
+}

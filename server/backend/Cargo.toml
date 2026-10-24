@@ -1,0 +1,29 @@
+[package]
+name = "entrylens"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.93"
+description = "Entrylens application server"
+license = "MPL-2.0"
+publish = false
+
+[dependencies]
+axum = "0.8"
+mime_guess = "2"
+rust-embed = "8"
+serde = { version = "1", features = ["derive"] }
+serde_json = { version = "1", features = ["raw_value"] }
+sqlx = { version = "0.8", default-features = false, features = ["macros", "migrate", "runtime-tokio", "sqlite"] }
+tokio = { version = "1", features = ["macros", "net", "rt-multi-thread", "signal"] }
+tower-http = { version = "0.6", features = ["trace"] }
+toml = "1"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+utoipa = "5"
+
+[dev-dependencies]
+tower = { version = "0.5", features = ["util"] }
+
+# SQLite is slow without optimisation; optimise it in development builds too.
+[profile.dev.package.libsqlite3-sys]
+opt-level = 3

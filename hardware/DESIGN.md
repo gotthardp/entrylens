@@ -345,14 +345,19 @@ both supported; the choice is set via NFC provisioning.
 
 Event counters are aggregated and uplinked within 5 minutes of a detection, subject to duty-cycle
 limits. This window bounds the reporting latency while leaving duty-cycle margin for FOTA
-downlinks.
+downlinks. The device also sends an uplink after a period without detections, so that the network
+server can tell a quiet doorway from a silent device.
 
 The device keeps no synchronized wall-clock time, so events are associated with the network-server
 reception timestamp rather than a precise local detection timestamp.
 
 Counters are cumulative and volatile; no counter state is written to non-volatile memory. Any
-reset or supply interruption restarts them at zero, and each uplink carries the cumulative value
-and a reboot indicator so the network server can reconcile the discontinuity.
+reset or supply interruption restarts them at zero. Each uplink carries the cumulative value; the
+network server recognises the discontinuity by the LoRaWAN uplink frame counter, which also
+restarts at zero, so there is no dedicated reboot indicator.
+
+Each uplink also carries the device's fault code (0 when there is no fault) and its input voltage,
+the +5V measured through the ADC divider.
 
 ### 5.3 FOTA update
 

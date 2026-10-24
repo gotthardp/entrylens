@@ -1,0 +1,39 @@
+[Unit]
+Description=Entrylens application server
+Documentation=https://github.com/gotthardp/entrylens/tree/master/server
+After=network.target
+
+[Service]
+Type=exec
+ExecStart=/usr/bin/entrylens
+User=entrylens
+Group=entrylens
+Environment=RUST_LOG=info
+StateDirectory=entrylens
+Restart=on-failure
+
+# Hardening
+CapabilityBoundingSet=
+LockPersonality=yes
+MemoryDenyWriteExecute=yes
+NoNewPrivileges=yes
+PrivateDevices=yes
+PrivateTmp=yes
+ProtectClock=yes
+ProtectControlGroups=yes
+ProtectHome=yes
+ProtectHostname=yes
+ProtectKernelLogs=yes
+ProtectKernelModules=yes
+ProtectKernelTunables=yes
+ProtectSystem=strict
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=yes
+RestrictRealtime=yes
+RestrictSUIDSGID=yes
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

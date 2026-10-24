@@ -23,6 +23,14 @@ production batch of approximately 20 units.
 
 In development.
 
+## Server
+
+Integrates with the [ChirpStack](https://www.chirpstack.io/) LoRaWAN Network Server.
+
+Requirements and architecture are described in [DESIGN.md](server/DESIGN.md).
+
 ## License
 
 Hardware design files are licensed under [CERN-OHL-W](https://cern-ohl.web.cern.ch).
+
+The server is licensed under the [Mozilla Public License 2.0](https://mozilla.org/MPL/2.0/).
