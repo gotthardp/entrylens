@@ -53,3 +53,7 @@ voltage, and DC-bias derating scales with the fraction of rated voltage actually
 
 The online datasheet states "Graphs for the item are not supported", so it publishes no DC-bias
 curve. Rated voltage is therefore the only derating indicator the vendor provides.
+
+## Reflow soldering
+
+Not stated in the Samsung online datasheet.

@@ -36,3 +36,9 @@ specific number (e.g. a budget or margin calculation).
 |---|---|---|
 | <e.g. pin voltage> | <e.g. 7 V> | <e.g. absolute maximum> |
 | <e.g. supply current, active state> | <e.g. 50 mA typ / 80 mA max> | <e.g. worst case, 85 degC> |
+
+## Reflow soldering
+
+Give in one to three sentences what the part's own datasheet states: peak temperature and time,
+any other binding limit, number of passes, and MSL or floor life. Write "not stated" for a gap
+and label any inference from J-STD-020 as one.

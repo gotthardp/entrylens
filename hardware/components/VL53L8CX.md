@@ -61,3 +61,9 @@ This applies whichever order the three start in, to whichever rails are still ri
 
 Reset is a power cycle of all three supplies - there is no software reset: set all three low, wait
 10 ms, set all three high. Toggling SPI_I2C_N resets only the I2C target; LPn gives standby only.
+
+## Reflow soldering
+
+`vl53l8cx.pdf` 12.5 and 12.6 (Table 24): peak 240 degC recommended, 260 degC max, 55 to 65 s
+above 217 degC, 3 passes max; a peak above 240 degC must be qualified by the customer. Dry
+convection reflow only, no vapor phase, no washing. MSL 3.

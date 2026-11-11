@@ -24,3 +24,8 @@
 | Reverse voltage, each die | 5 V | Absolute maximum |
 | Power dissipation, each die | 75 mW | Absolute maximum |
 | Operating temperature range | -30 to 85 degC | |
+
+## Reflow soldering
+
+`LTST-C295KGKRKT.PDF` soldering cautions: peak 260 degC for 10 s max, 2 passes max. Floor life is
+1 week after opening, then bake at about 60 degC for at least 20 h.

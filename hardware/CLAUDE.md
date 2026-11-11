@@ -103,8 +103,12 @@ the netlist. It renames translated nets to `NET_1`, `NET_2` and so on, so compar
 against the netlist produces dozens of false mismatches. Compare the net *partitions* - the sets
 of pins grouped together - not the names.
 
-It also lists vias and JLC test points under `PAD<n>` and `TPJLC` pseudo-designators. Filter those
-out before comparing partitions, or every net appears to mismatch.
+It also lists every SMD component pad a second time under `PAD<n>` pseudo-designators, and JLC
+test points under `TPJLC`. It contains no vias. Filter both out before comparing partitions, or
+every net appears to mismatch.
+
+The partition check proves net assignment only, not copper: a stale pour fill can short planes
+while this file still matches. Check copper connectivity from the Gerbers as well.
 
 ### Native EasyEDA Pro project
 
@@ -182,6 +186,8 @@ Augment the skills' own checklists from two sources:
   ESD (IEC 61000-4-2) and RF field (IEC 61000-4-3) on the enclosure; burst (IEC 61000-4-4) and RF
   common mode (IEC 61000-4-6) on ports whose cables may exceed 3 m; surge (IEC 61000-4-5) only on
   AC mains and wired network ports.
+- Every protection device's response time, not just its static threshold, keeps downstream
+  parts within their absolute maximum ratings.
 
 `/pcb-layout-review` is augmented by `.claude/references/pcb-checklist/layout-checklist.md`, plus:
 - Each ground pad has its own via to the reference plane.

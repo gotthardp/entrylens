@@ -59,3 +59,8 @@ and has no LPD pin, so that route does not exist for this part.
 | 1.1.1 | Potential RF and I2C lock if VCC is disconnected then reconnected while an RF field is present. A floating VCC under RF sits at about 1.4 V; the device leaves that state by itself if the field goes away, if any RF command arrives (VCC then falls to 0 V), or if VCC rises above 1.8 V. But a 1.4 V -> 0 V -> >1.8 V sequence can deadlock it: all I2C accesses unacknowledged, every RF command answered with error 0Fh. The trigger is a negative VCC pulse **shorter than 1 ms**, which leaves internal capacitors partly charged so the internal reset does not complete | Hold VCC at 0 V for **longer than 1 ms** before disconnecting it, or before reconnecting it. Alternatively a capacitor on VCC whose time constant exceeds the glitch filters it out |
 | 1.3.1 | Sub-carrier frequency drift on a marginal portion of production parts causes a communication hole at certain field strengths; more likely as ambient temperature falls | Move the tag closer or farther; a tap gesture is less affected because the protocol retries; revision 13h parts are fixed; some readers are insensitive to the drift |
 | 1.4.1 | An I2C write carrying only the system device select code and memory address 0900h, with no data byte, corrupts the internal memory address pointer, so a following I2C write can program at the wrong address | Never write address 0900h without at least one data byte. Use 0900h only to present or write passwords. Any I2C random read to a valid address resets the pointer |
+
+## Reflow soldering
+
+`st25dv04kc.pdf` gives no number: TLEAD refers to J-STD-020C for small bodies, which implies
+260 degC for the SO8N (an inference from the standard). MSL not stated.

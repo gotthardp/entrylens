@@ -21,3 +21,8 @@ terminal.
 | Temperature-rise current (Irms) | 5.5 A | Based on 40 degC typical temperature rise |
 | Maximum voltage | 30 V DC | |
 | Operating temperature & humidity | -55 to 125 degC | Including self-generated heat |
+
+## Reflow soldering
+
+`ASPI-0530HI.pdf` Rev C, page 5: peak 250 degC for 3 s max, and 20 s at 200 degC without saying
+whether that is a minimum or a maximum. MSL 1.

@@ -70,9 +70,9 @@ remotely where wireless connectivity is available.
 
 ### 2.4 Service
 
-The debug/programming connector inside the enclosure gives access to detailed device status and is
-used for troubleshooting, firmware updates and production programming. It is not connected during
-normal operation.
+The debug/programming connector gives access to detailed device status and is used for
+troubleshooting, firmware updates and production programming. Debugging is done with the PCB
+outside the enclosure. The connector is not connected during normal operation.
 
 The debug connector must not be used to power the device; the debugger's target power output must
 be disabled.
@@ -194,6 +194,11 @@ overvoltage lockout (6.8 - 8.45 V in), the device keeps running with +5V held at
 TLV62569 input then reaches 5.55 V, over its 5.5 V recommended maximum but inside its 6 V limit;
 this is accepted for a fault condition.
 
+A fast input rise above the lockout during operation is not clamped: +5V follows the input for the
+0.6 us the TPS25200 takes to switch off. For a 1 V/us rise the two 22 uF capacitors on +5V hold the
+peak to about 6.5 V (TPS25200 Figure 8-3), still above the 6 V TLV62569 limit. A fixed 5 V SELV
+supply does this only when it fails, so the case is accepted as a supply fault.
+
 | Input at lockout | TPS25200 dissipation | TJ at 40 C |
 |---|---|---|
 | 6.8 V  | 0.30 W | 60 C |
@@ -213,8 +218,9 @@ The peak current budget below treats VL53L8CX ranging and RAK3172 transmission a
 | LTST-C295KGKRKT | 22 mA  | |
 | Total           | 219 mA | 100 mA |
 
-The +3V3 rail supplies 319 mA including +1V8, against a TPS25200 current limit of 428 mA
-(366 - 495 mA).
+The +3V3 rail supplies 319 mA including +1V8, which draws 0.33 - 0.34 A at the 3.5 V minimum input,
+about 10 % below the TPS25200 minimum current limit of 366 mA (428 mA nominal). The margin is
+checked at bring-up at 3.5 V input.
 
 At its 100 mA share the MIC5504 runs at TJ 78 - 82 C, against a 125 C limit.
 
@@ -312,17 +318,25 @@ Fabrication:
 - Material: FR-4 TG135
 - Thickness: 1.6 mm
 - Copper: 1 oz on outer layers, as the NFC coil requires, and 0.5 oz on inner layers
-- Surface finish: HASL with lead
+- Surface finish: OSP, for flat pads under the LGA and fine-pitch parts
 - Vias: epoxy filled and capped, so thermal-pad vias do not draw solder from the joint
 - Marking: 5 x 5 mm 2D barcode with a serial number ABCDE_0001
 
-Assembly is SMT on the top side only; the power connector is through-hole and hand-soldered.
+Assembly is SMT on the top side only. The power connector is through-hole and hand-soldered
+within about a week of reflow, while the OSP still protects the bare copper.
 
-The VL53L8CX (MSL 3) package is not sealed, so assembly uses no-clean solder paste and no washing
-(DS14161 12.6). The leaded HASL finish means leaded solder paste instead of ST's recommended
-SAC305, accepted for its lower reflow peak.
+The VL53L8CX (MSL 3) package is not sealed, so assembly uses no-clean SAC305 solder paste, as ST
+recommends, and no washing (DS14161 12.6). The RAK3172 and ASPI-0530HI limit the reflow peak to
+250 degC.
 
-Leaded solder is acceptable because RoHS does not apply (Section 6).
+The VL53L8CXV0GC/1 ships with a protective liner over its window that survives reflow. It must be
+removed after soldering, before enclosure assembly; with no cover glass, a liner left in place
+blocks the sensor (DS14161 Section 14).
+
+The JLCPCB order carries these statements in the PCBA remark:
+- "Use no-clean lead-free SAC305 solder paste. Do not wash the board."
+- "Peak reflow temperature 250 degC max."
+- "Keep the protective liner on the VL53L8CX in place."
 
 
 ## 5. Software
@@ -381,7 +395,8 @@ Formal conformity assessment and testing have not yet been completed.
 
 EMC immunity levels are not declared at design time; they are set at conformity assessment.
 Instead, the power input is designed to tolerate what a 20 m indoor cable produces: hot-plug
-ringing, coupled switching transients and miswiring.
+ringing, coupled switching transients and miswiring. It has no common-mode filter; burst and
+conducted RF immunity are left to pre-compliance testing.
 
 The applicable RED essential requirements are:
 - Article 3(1)(a): health and safety

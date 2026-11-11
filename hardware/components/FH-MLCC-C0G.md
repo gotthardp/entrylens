@@ -35,3 +35,8 @@
 | Withstanding voltage | 3 x rated voltage | 60 s |
 | Operating temperature range | -55 to 125 degC | |
 | Dimensions (0402) | 1.00 +/-0.05 x 0.50 +/-0.05 x 0.50 +/-0.05 mm | L x W x T |
+
+## Reflow soldering
+
+`MLCC-NPO.pdf` gives no reflow profile. The part is rated for wave, reflow or vapor phase
+soldering and passes a 260 degC, 10 s solder-dip test (page 4).

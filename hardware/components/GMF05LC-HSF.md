@@ -41,3 +41,7 @@ clamped to VF close to ground level.
 | Forward clamping voltage (VF) | 3.1 to 4 V typ/max | At IPP = IPPM = 5 A, IEC 61000-4-5 |
 | Capacitance (CD) | 43 to 50 pF typ/max | At VR = 0 V, f = 1 MHz |
 | Capacitance (CD) | 25 pF typ | At VR = 2.5 V, f = 1 MHz |
+
+## Reflow soldering
+
+`gmf05lc.pdf`: peak 260 degC max per J-STD-020. MSL 1.

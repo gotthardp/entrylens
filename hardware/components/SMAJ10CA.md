@@ -27,3 +27,8 @@ requirement per terminal. Bidirectional parts carry no cathode band.
 | ESD immunity (IEC 61000-4-2) | 30 kV air / 30 kV contact | Device-level rating |
 | Operating junction temperature | -65 to 150 degC | |
 | Thermal resistance | 30 degC/W junction to lead, 120 degC/W junction to ambient | Typical |
+
+## Reflow soldering
+
+`Littelfuse-TVS-Diode-SMAJ-Datasheet.pdf` "Reflow Condition": peak 260 +0/-5 degC, 30 s max
+within 5 degC of peak, 60 to 150 s above 217 degC. MSL 1.
